@@ -1,7 +1,15 @@
-#   export DOCKER_HUB_USERNAME="<docker-hub-username>"
-#   export DOCKER_HUB_PASSWORD="<docker-hub-password>"
+#!/usr/bin/env bash
 
-export INTERNAL_REGISTRY="sehsahdemo.azurecr.io"
+function check_env() {
+  eval ev='$'$1
+  if [ "$ev" == "" ]; then
+    echo "env var $1 not defined"
+    exit 1
+  fi
+}
+
+check_env INTERNAL_REGISTRY
+
 
 #################################### cert-manager ######################################################
 
