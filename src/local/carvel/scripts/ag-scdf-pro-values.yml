@@ -1,0 +1,31 @@
+scdf:
+  deploy:
+    binder:
+      type: rabbit
+    database:
+      type: postgres
+  server:
+    service:
+      type: LoadBalancer
+    # image:
+    #   repository: 'sehsahdemo.azurecr.io/scdf/scdf-pro-server'
+  # ctr:
+  #   image:
+  #     repository: 'sehsahdemo.azurecr.io/scdf/spring-cloud-dataflow-composed-task-runner'
+  # skipper:
+  #   image:
+  #     repository: 'sehsahdemo.azurecr.io/scdf/spring-cloud-skipper-server'
+  # feature:
+  #   monitoring:
+  #     grafana:
+  #       image:
+  #         repository: 'sehsahdemo.azurecr.io/scdf/spring-cloud-dataflow-grafana-prometheus'
+  # scdf:
+  #   feature:
+  #     monitoring:
+  #       prometheusRsocketProxy:
+  #         image:
+  #           repository: 'micrometermetrics/prometheus-rsocket-proxy'
+  registry:
+    secret:
+      ref: "reg-creds-dev-registry"
