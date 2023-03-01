@@ -12,7 +12,7 @@ function check_env() {
 PACKAGE_VERSION=1.5.2-SNAPSHOT
 PACKAGE_NAME=scdfpro.tanzu.vmware.com
 REGISTRY=dev.registry.pivotal.io
-REPO_NAME="p-scdf-for-kubernetes/scdf-pro-repo"
+
 
 
 
@@ -27,8 +27,14 @@ check_env DOCKER_HUB_PASSWORD
 docker login index.docker.io -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 check_env INTERNAL_REGISTRY
-docker login $INTERNAL_REGISTRY
+# docker login $INTERNAL_REGISTRY
 
-imgpkg copy -b $REGISTRY/$REPO_NAME:$PACKAGE_VERSION --to-tar=scdf-pro-repo-$PACKAGE_VERSION.tar
-imgpkg copy --tar scdf-pro-repo-$PACKAGE_VERSION.tar --to-repo=$INTERNAL_REGISTRY/$REPO_NAME
+ARTIFACT_NAME="scdf-pro-repo"
+REPO_NAME="p-scdf-for-kubernetes"
+TARGET_REPO_NAME="scdf"
 
+imgpkg copy -b $REGISTRY/$REPO_NAME/$ARTIFACT_NAME:$PACKAGE_VERSION --to-tar=$ARTIFACT_NAME-$PACKAGE_VERSION.tar
+
+
+
+imgpkg copy --tar $ARTIFACT_NAME-$PACKAGE_VERSION.tar --to-repo=$INTERNAL_REGISTRY/$TARGET_REPO_NAME/$ARTIFACT_NAME

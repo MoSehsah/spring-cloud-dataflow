@@ -62,7 +62,7 @@ check_env INTERNAL_REGISTRY
 REGISTRY=$INTERNAL_REGISTRY
 PACKAGE_VERSION=1.5.2-SNAPSHOT
 PACKAGE_NAME=scdfpro.tanzu.vmware.com
-REPO_NAME="p-scdf-for-kubernetes/scdf-pro-repo"
+REPO_NAME="scdf/scdf-pro-repo"
 
 PACKAGE="$REGISTRY/$REPO_NAME:$PACKAGE_VERSION"
 

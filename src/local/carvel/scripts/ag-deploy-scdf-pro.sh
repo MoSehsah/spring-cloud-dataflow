@@ -21,7 +21,7 @@ check_env INTERNAL_REGISTRY
 REGISTRY=$INTERNAL_REGISTRY
 PACKAGE_VERSION=1.5.2-SNAPSHOT
 PACKAGE_NAME=scdfpro.tanzu.vmware.com
-REPO_NAME="p-scdf-for-kubernetes/scdf-pro-repo"
+REPO_NAME="scdf/scdf-pro-repo"
 APP_NAME=scdf-pro
 
 PACKAGE="$REGISTRY/$REPO_NAME:$PACKAGE_VERSION"
@@ -29,7 +29,7 @@ set +e
 kctrl package install --package-install $APP_NAME \
   --service-account-name $SA \
   --package $PACKAGE_NAME \
-  --values-file "$SCDIR/scdf-pro-values.yml" \
+  --values-file "$SCDIR/ag-scdf-pro-values.yml" \
   --version $PACKAGE_VERSION --namespace $NS --yes \
   --wait --wait-check-interval 10s
 
