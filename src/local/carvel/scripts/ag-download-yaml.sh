@@ -22,18 +22,18 @@ install() {
   echo "Downloading manifests..."
   mkdir -p manifests-download
 
-
+# TODO: externalize versions in the script
   echo "Downloading cert-manager..."
-  $dl_bin https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml > ./manifests-download/cert-manager.yaml
-  echo "Downloaded yaml for cert-manager v1.11.0"
+  $dl_bin https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.yaml > ./manifests-download/cert-manager.yaml
+  echo "Downloaded yaml for cert-manager v1.11.1"
   
   echo "Downloading secretgen..."
-  $dl_bin https://github.com/carvel-dev/secretgen-controller/releases/download/v0.13.1/release.yml > ./manifests-download/secretgen-controller.yaml
-  echo "Downloaded yaml for secretgen v0.13.1"
+  $dl_bin https://github.com/carvel-dev/secretgen-controller/releases/download/v0.14.2/release.yml > ./manifests-download/secretgen-controller.yaml
+  echo "Downloaded yaml for secretgen v0.14.2"
   
   echo "Downloading kapp-controller..."
-  $dl_bin https://github.com/carvel-dev/kapp-controller/releases/download/v0.44.6/release.yml > ./manifests-download/kapp-controller.yaml
-  echo "Downloaded yaml for kapp-controller v0.44.6"
+  $dl_bin https://github.com/carvel-dev/kapp-controller/releases/download/v0.45.0/release.yml > ./manifests-download/kapp-controller.yaml
+  echo "Downloaded yaml for kapp-controller v0.45.0"
   
 }
 

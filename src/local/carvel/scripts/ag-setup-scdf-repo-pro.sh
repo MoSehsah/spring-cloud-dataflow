@@ -59,6 +59,8 @@ kubectl create serviceaccount "$NS-sa" --namespace $NS
 
 
 check_env INTERNAL_REGISTRY
+check_env INTERNAL_REGISTRY_SECRET_YAML
+
 REGISTRY=$INTERNAL_REGISTRY
 PACKAGE_VERSION=1.5.2-SNAPSHOT
 PACKAGE_NAME=scdfpro.tanzu.vmware.com
@@ -68,10 +70,13 @@ PACKAGE="$REGISTRY/$REPO_NAME:$PACKAGE_VERSION"
 
 kubectl apply -f "$SCDIR/ag-secret-gen-export.yml" --namespace secrets-ns
 
-check_env INTERNAL_REGISTRY_USERNAME
-check_env INTERNAL_REGISTRY_PASSWORD
+# check_env INTERNAL_REGISTRY_USERNAME
+# check_env INTERNAL_REGISTRY_PASSWORD
 
-create_secret reg-creds-dev-registry $REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD"
+# create_secret reg-creds-dev-registry $REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD"
+kubectl apply -f $INTERNAL_REGISTRY_SECRET_YAML -n $NS
+kubectl apply -f $INTERNAL_REGISTRY_SECRET_YAML -n secrets-ns
+
 echo "Annotating reg-creds-dev-registry for image-pull-secret"
 kubectl annotate secret reg-creds-dev-registry --namespace secrets-ns  secretgen.carvel.dev/image-pull-secret=""
 

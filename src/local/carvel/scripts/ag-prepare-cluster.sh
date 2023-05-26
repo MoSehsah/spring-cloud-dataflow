@@ -24,12 +24,15 @@ kubectl create namespace secretgen-controller --dry-run=client -o yaml | kubectl
 check_env INTERNAL_REGISTRY
 check_env INTERNAL_REGISTRY_USERNAME
 check_env INTERNAL_REGISTRY_PASSWORD
+check_env INTERNAL_REGISTRY_SECRET_YAML
 
-create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" secretgen-controller
+
+
+# create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" secretgen-controller
 # kubectl create sa secretgen-controller-sa -n secretgen-controller --dry-run=client -o yaml | kubectl apply -f -
 # kubectl patch sa secretgen-controller-sa -n secretgen-controller -p '"imagePullSecrets": [{"name": "reg-creds-dev-registry" }]'
+kubectl apply -f $INTERNAL_REGISTRY_SECRET_YAML -n secretgen-controller
 kubectl patch sa default -n secretgen-controller -p '"imagePullSecrets": [{"name": "reg-creds-dev-registry" }]'
-
 
 # echo "Annotating reg-creds-dev-registry for image-pull-secret"
 # kubectl annotate secret reg-creds-dev-registry --namespace secretgen-controller  secretgen.carvel.dev/image-pull-secret=""
@@ -44,7 +47,8 @@ echo "Deployed secretgen-controller"
 
 echo "Creating cert-manager namespace"
 kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
-create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" cert-manager
+kubectl apply -f $INTERNAL_REGISTRY_SECRET_YAML -n cert-manager
+# create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" cert-manager
 kubectl patch sa default -n secretgen-controller -p '"imagePullSecrets": [{"name": "reg-creds-dev-registry" }]'
 
 echo "Deploying cert-manager"
@@ -54,7 +58,8 @@ echo "Deployed cert-manager"
 
 echo "Creating kapp-controller namespace"
 kubectl create namespace kapp-controller --dry-run=client -o yaml | kubectl apply -f -
-create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" kapp-controller
+# create_secret reg-creds-dev-registry $INTERNAL_REGISTRY "$INTERNAL_REGISTRY_USERNAME" "$INTERNAL_REGISTRY_PASSWORD" kapp-controller
+kubectl apply -f $INTERNAL_REGISTRY_SECRET_YAML -n kapp-controller
 kubectl patch sa default -n kapp-controller -p '"imagePullSecrets": [{"name": "reg-creds-dev-registry" }]'
 echo "Deploying kapp-controller"
 kapp deploy --yes --wait --wait-check-interval 10s --app kapp-controller --file <(ytt template -f manifests-download/kapp-controller.yaml -f  ag-secret-overlay.yaml)

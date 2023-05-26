@@ -42,7 +42,7 @@ install() {
   echo "Downloading ${binary_type} binaries..."
   mkdir -p carvel-download
 
-  
+  #TODO: variables for versions
   echo "Downloading ytt..."
   $dl_bin github.com/carvel-dev/ytt/releases/download/v0.44.3/ytt-${binary_type} > ./carvel-download/ytt-${binary_type}
   echo "${ytt_checksum}  ./carvel-download/ytt-${binary_type}" | shasum -c -
