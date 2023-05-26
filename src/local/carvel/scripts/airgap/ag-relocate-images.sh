@@ -61,7 +61,7 @@ sed -i -e "s~$SC_1~$SC_1_INTERNAL_SHA~g" ./manifests-download/secretgen-controll
 #################################### kapp-controller ######################################################
 
 
-export KAP_1="ghcr.io/carvel-dev/kapp-controller@sha256:8850f244fbe86443e1241d461918850e9f69de093c47d2ff7260578e80199078"
+export KAP_1="ghcr.io/carvel-dev/kapp-controller@sha256:8011233b43a560ed74466cee4f66246046f81366b7695979b51e7b755ca32212"
 
 export KAP_1_INTERNAL="${INTERNAL_REGISTRY}/scdf/carvel-dev/kapp-controller"
 

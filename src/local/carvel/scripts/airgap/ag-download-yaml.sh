@@ -32,8 +32,8 @@ install() {
   echo "Downloaded yaml for secretgen v0.14.2"
   
   echo "Downloading kapp-controller..."
-  $dl_bin https://github.com/carvel-dev/kapp-controller/releases/download/v0.45.0/release.yml > ./manifests-download/kapp-controller.yaml
-  echo "Downloaded yaml for kapp-controller v0.45.0"
+  $dl_bin https://github.com/carvel-dev/kapp-controller/releases/download/v0.45.1/release.yml > ./manifests-download/kapp-controller.yaml
+  echo "Downloaded yaml for kapp-controller v0.45.1"
   
 }
 
