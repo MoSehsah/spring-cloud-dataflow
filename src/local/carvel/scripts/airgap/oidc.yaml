@@ -1,0 +1,38 @@
+server:
+  env:
+    - name: spring.security.oauth2.client.registration.keycloak.client-id
+      value: scdf-client
+    - name: spring.security.oauth2.client.registration.keycloak.client-secret
+      value: <CLIENT_SECRET>
+    - name: spring.security.oauth2.client.registration.keycloak.scope
+      value: 'openid'
+    - name: spring.security.oauth2.client.registration.keycloak.authorization-grant-type
+      value: authorization_code
+
+    - name: spring.security.oauth2.client.provider.keycloak.issuer-uri
+      value: <ISSUER_URL>
+    - name: spring.security.oauth2.client.provider.keycloak.user-name-attribute
+      value: user_name
+
+    - name: spring.security.oauth2.resourceserver.opaquetoken.introspection-uri
+      value: <INTROSPECTION_URI>
+    - name: spring.security.oauth2.resourceserver.opaquetoken.client-id
+      value: scdf-client
+    - name: spring.security.oauth2.resourceserver.opaquetoken.client-secret
+      value: <CLIENT_SECRET>
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.map-oauth-scopes
+      value: 'true'
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_VIEW
+      value: dataflow.view
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_CREATE
+      value: dataflow.create
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_MANAGE
+      value: dataflow.manage
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_DEPLOY
+      value: dataflow.deploy
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_DESTROY
+      value: dataflow.destroy
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_MODIFY
+      value: dataflow.modify
+    - name: spring.cloud.dataflow.security.authorization.provider-role-mappings.keycloak.role-mappings.ROLE_SCHEDULE
+      value: dataflow.schedule
