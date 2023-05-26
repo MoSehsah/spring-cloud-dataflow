@@ -12,11 +12,11 @@ check_env INTERNAL_REGISTRY
 
 
 #################################### cert-manager ######################################################
-
-export CM_1="quay.io/jetstack/cert-manager-cainjector:v1.11.0"
-export CM_2="quay.io/jetstack/cert-manager-controller:v1.11.0"
-export CM_3="quay.io/jetstack/cert-manager-webhook:v1.11.0"
-export CM_4="quay.io/jetstack/cert-manager-acmesolver:v1.11.0"
+# TODO: YQ
+export CM_1="quay.io/jetstack/cert-manager-cainjector:v1.11.1"
+export CM_2="quay.io/jetstack/cert-manager-controller:v1.11.1"
+export CM_3="quay.io/jetstack/cert-manager-webhook:v1.11.1"
+export CM_4="quay.io/jetstack/cert-manager-acmesolver:v1.11.1"
 
 
 export CM_1_INTERNAL="${INTERNAL_REGISTRY}/scdf/cert-manager/cert-manager-cainjector:v1.11.0"
@@ -45,7 +45,7 @@ sed -i -e "s~$CM_4~$CM_4_INTERNAL~g" ./manifests-download/cert-manager.yaml
 
 #################################### secretgen-controller ######################################################
 
-export SC_1="ghcr.io/carvel-dev/secretgen-controller@sha256:6a0e2ce63f5ebae239f230a2e1b8d9c717e26fd78f54dbe5d07012d4ad2bb340"
+export SC_1="ghcr.io/carvel-dev/secretgen-controller@sha256:227567a3d3eacbaae4778ab1e58609a68f4bce5e099f2dd96597aa98c0708249"
 
 export SC_1_INTERNAL="${INTERNAL_REGISTRY}/scdf/carvel-dev/secretgen-controller"
 
@@ -61,7 +61,7 @@ sed -i -e "s~$SC_1~$SC_1_INTERNAL_SHA~g" ./manifests-download/secretgen-controll
 #################################### kapp-controller ######################################################
 
 
-export KAP_1="ghcr.io/carvel-dev/kapp-controller@sha256:eea5193161109c3685edad596b4b740a0683a0cb892f2a9cf94af96c6008203b"
+export KAP_1="ghcr.io/carvel-dev/kapp-controller@sha256:8850f244fbe86443e1241d461918850e9f69de093c47d2ff7260578e80199078"
 
 export KAP_1_INTERNAL="${INTERNAL_REGISTRY}/scdf/carvel-dev/kapp-controller"
 

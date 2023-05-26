@@ -9,7 +9,7 @@ function check_env() {
 
 
 
-PACKAGE_VERSION=1.5.2-SNAPSHOT
+PACKAGE_VERSION=1.5.3
 PACKAGE_NAME=scdfpro.tanzu.vmware.com
 REGISTRY=dev.registry.pivotal.io
 
@@ -21,10 +21,9 @@ check_env TANZU_DOCKER_PASSWORD
 
 docker login $REGISTRY -u $TANZU_DOCKER_USERNAME -p $TANZU_DOCKER_PASSWORD
 
-check_env DOCKER_HUB_USERNAME
-check_env DOCKER_HUB_PASSWORD
-
-docker login index.docker.io -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+#check_env DOCKER_HUB_USERNAME
+#check_env DOCKER_HUB_PASSWORD
+#docker login index.docker.io -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 check_env INTERNAL_REGISTRY
 # docker login $INTERNAL_REGISTRY
