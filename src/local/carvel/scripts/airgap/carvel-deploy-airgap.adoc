@@ -1,0 +1,163 @@
+:source-highlighter: rouge
+= Deploy Spring Cloud Data Flow using Carvel in an airgap 
+
+Two machines will be assumed in this document. One that's connected to the internet and private registry and another machine that's connected to K8s cluster
+
+== Machine connected to the internet
+
+// * `kubectl` - Kubernetes CLI
+* Docker installed
+* `wget` or `curl`
+* `carvel` - Packaging and Deployment tools
+
+=== Download and Install Carvel CLI tools
+
+1. Carvel CLI can be downloaded using:
++
+[source,shell]
+....
+export CARVEL_DOWNLOAD_BINARY_TYPE=linux-amd64
+# or if you are using Intel Mac
+export CARVEL_DOWNLOAD_BINARY_TYPE=darwin-amd64
+./ag-download-carvel.sh
+....
+
+2. Carvel CLI can be installed using:
++
+[source,shell]
+....
+export K14SIO_INSTALL_BIN_DIR=/usr/local/bin
+./ag-install-carvel.sh
+....
+3. Download CLI again for the second machine
++
+[source,shell]
+....
+export CARVEL_DOWNLOAD_BINARY_TYPE=linux-amd64
+# or if you are using Intel Mac
+export CARVEL_DOWNLOAD_BINARY_TYPE=darwin-amd64
+./ag-download-carvel.sh
+....
+
+
+=== Relocate Cluster Essentials Images to private container registry
+* `Cert-Manager` -> `v1.11.1`
+* `Secretgen-Controller` -> `v0.14.2`
+* `Kapp-Controller` -> `v0.45.0`
+
+1. Download K8s manifests
++
+[source,shell]
+....
+./ag-download-yaml.sh
+....
+
+2. Make sure you are logged in to the private container registry
++
+....
+export INTERNAL_REGISTRY='<internal-container-registry>'
+docker login $INTERNAL_REGISTRY
+....
+3.  relocate images
++
+[source,shell]
+....
+./ag-relocate-images.sh
+....
+
+
+
+=== Relocate Spring Cloud Dataflow Pro Packages
+
+// # Always preferred to ensure you don't experience rate limiting with Docker HUB
+// export DOCKER_HUB_USERNAME='<docker-hub-username>'
+// export DOCKER_HUB_PASSWORD='<docker-hub-password>'
+[source,shell]
+....
+# Provide Credentials to Tanzu Network
+export TANZU_DOCKER_USERNAME='<tanzu-net-username>'
+export TANZU_DOCKER_PASSWORD='<tanzu-net-password>'
+
+# login to internal registry with docker (ignore if already logged in)
+export INTERNAL_REGISTRY='<internal-container-registry>'
+docker login $INTERNAL_REGISTRY
+
+
+./ag-setup-scdf-repo-pro-relocate.sh
+....
+
+== Machine connected to the K8s cluster
+
+. Copy the current folder from the internet machine to the K8s connected machine (including `manifests-download` and `carvel-download`)
+. Install Cluster Essentials
++
+If private registry allows anonymous pull
++
+[source,shell]
+....
+export INTERNAL_REGISTRY='<internal-container-registry>'
+./ag-prepare-cluster.sh
+
+....
++
+If private registry *does not* allow anonymous pull. Uncomment lines #25,26,36,37,47,48. Also, comment all `kapp deploy` lines and uncomment the ones with `--file <(ytt template ...`
+
++
+[source,shell]
+....
+export INTERNAL_REGISTRY='<internal-container-registry>'
+export INTERNAL_REGISTRY_USERNAME='<internal-container-registry_username>'
+export INTERNAL_REGISTRY_PASSWORD='<internal-container-registry_password>'
+export INTERNAL_REGISTRY_SECRET_YAML='<provide-filename-to-store-secret.yaml>'
+
+kubectl create secret docker-registry reg-creds-dev-registry --docker-server=$INTERNAL_REGISTRY --docker-username=$INTERNAL_REGISTRY_USERNAME --docker-password=$INTERNAL_REGISTRY_PASSWORD --dry-run=client -o yaml > $INTERNAL_REGISTRY_SECRET_YAML
+
+./ag-prepare-cluster.sh
+
+....
+
+. Install SCDF to the K8s Cluster
++
+.. Update `ag-scdf-pro-values.yml` as highligted in <<Prepare Configuration file>>.
+
++
+if private registry allows anonymous pull
++
+[source,shell]
+....
+export NS=scdf
+export INTERNAL_REGISTRY='<internal-container-registry>'
+....
++
+If private registry *does not* allow anonymous pull. Uncomment lines #71 to #75 in `ag-setup-scdf-repo-pro.sh`
++
+[source,shell]
+....
+export NS=scdf
+export INTERNAL_REGISTRY='<internal-container-registry>'
+export INTERNAL_REGISTRY_SECRET_YAML='<provide-filename-to-store-secret.yaml>'
+
+./ag-setup-scdf-repo-pro.sh
+
+./ag-deploy-scdf-pro.sh
+....
+
+
+=== Prepare Configuration file
+
+Create a file name `ag-scdf-pro-values.yml` with the following text:
+
+[source,yaml]
+....
+include::ag-scdf-pro-values.yml[]
+....
+
+
+Sample Configuration for Keycloak OIDC
+[source,yaml]
+....
+include::oidc.yaml[]
+....
+
+NOTE: The value files can be modified to select _mariadb_ or _postgres_ and _kafka_ or _rabbit_. You  can also configure external databases and brokers.
+
